@@ -1,0 +1,20 @@
+#! /usr/bin/perl -w
+# replicatesearchdb. Looks up the Xapian DB path from config, then
+# passes that along with all arguments to the actual implementation
+
+# Usage: $0 <PORT> <REMOTEHOST> <REMOTEUSER> <REMOTEPATH> <SSH_IDENTITY_FILE> [<REMOTE_LOCKFILE_PATH> [<REMOTE_RUN_WITH_LOCKFILE_BINARY_PATH>]]
+
+use strict;
+
+use FindBin;
+use File::Copy;
+use File::Path;
+use lib "$FindBin::Bin/../commonlib/perllib";
+
+use mySociety::Config;
+mySociety::Config::set_file("$FindBin::Bin/../conf/general");
+
+my $xapian = mySociety::Config::get('XAPIANDB');
+
+chdir "$FindBin::Bin/../search";
+system "./replicate-xapian-database", "$xapian", @ARGV;
