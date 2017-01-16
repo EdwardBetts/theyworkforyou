@@ -361,6 +361,7 @@ if ( $this_page == 'msp' || $this_page == 'yourmsp' ) {
 } else if ( $this_page == 'mla' || $this_page == 'yourmla' ) {
     $data['current_assembly'] = 'ni';
 }
+$data['og_image'] = '';
 
 // Do any necessary extra work based on the page type, and send for rendering.
 switch ($pagetype) {
