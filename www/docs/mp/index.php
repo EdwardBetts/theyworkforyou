@@ -505,6 +505,27 @@ switch ($pagetype) {
 
         MySociety\TheyWorkForYou\Renderer::output('mp/votes_svg', $data, true);
         break;
+
+    case 'policy_png':
+        $policy = get_http_var('policy');
+        $im = new Imagick();
+        $policiesList = new MySociety\TheyWorkForYou\Policies;
+
+        $url = $MEMBER->url(true) . "/policy_svg?policy=" . $policy;
+        $svg = file_get_contents($url);
+        $im->setOption('-antialias', true);
+        $im->readImageBlob($svg);
+        $im->setImageFormat("png24");
+
+        $filename = strtolower(str_replace(' ', '_', $MEMBER->full_name() . "_" . $policiesList->getSetDescriptions()[$policy] . ".png"));
+        header("Content-type: image/png");
+        header('Content-Disposition: filename="' . $filename . '"');
+        print $im->getImageBlob();
+
+        $im->clear();
+        $im->destroy();
+
+        break;
     case '':
     default:
 
