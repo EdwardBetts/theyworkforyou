@@ -91,6 +91,7 @@ define ("IMAGEPATH", WEBPATH . "images/");
 // This will be included in data.php. It's an array of page/section metadata.
 define ("METADATAPATH", BASEDIR . "/../includes/easyparliament/metadata.php");
 
+// Xapian Configuration.
 // Location of the directory that is the Xapian search database.
 // To use the Xapian remote backend, specify server:port.
 // If non-empty will use XAPIAN search.
@@ -98,6 +99,22 @@ define ("XAPIANDB", "");
 // To keep changesets when the indexer runs, set a value here.
 // See https://xapian.org/docs/replication.html
 define ("XAPIAN_MAX_CHANGESETS", "");
+// Set values here to activate one-shot replication. To disable, leave all undefined.
+// Port to listen on (required):
+define ("XAPIAN_REPLICATION_PORT"), "");
+// Backup hostname (required):
+define ("XAPIAN_REMOTE_HOST"), "");
+// Username on backup host (required):
+define ("XAPIAN_REMOTE_USER"), "");
+// Backup location on remote host (required):
+define ("XAPIAN_REMOTE_PATH"), "");
+// SSH key file to use (required):
+define ("XAPIAN_SSH_IDENTITY_FILE", "");
+// Lockfile to use on remote host (optional):
+define ("XAPIAN_REMOTE_LOCKFILE", "");
+// Path to run-with-lockfile on remote host if not in PATH (optional):
+define ("XAPIAN_REMOTE_RUN_WITH_LOCKFILE_PATH, "");
+
 // To allow back end to still index/send alerts, but turn off front end.
 define ('FRONT_END_SEARCH', 1);
 
