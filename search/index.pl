@@ -34,7 +34,7 @@ die "As first parameter, specify:
 # If there's a value for XAPIAN_MAX_CHANGESETS in the config file,
 # make sure it's in our environment.
 my $changesets = mySociety::Config::get('XAPIAN_MAX_CHANGESETS');
-$changesets && $ENV{XAPIAN_MAX_CHANGESETS} = $changesets;
+$ENV{XAPIAN_MAX_CHANGESETS} = $changesets if $changesets;
 
 # Open MySQL
 my $dsn = 'DBI:mysql:database=' . mySociety::Config::get('TWFY_DB_NAME'). ':host=' . mySociety::Config::get('TWFY_DB_HOST');

@@ -19,10 +19,10 @@ REMOTEUSER="$4"
 REMOTEPATH="$5"
 IDENTITY_FILE="$6"
 
-if [ "x$8" != "x" ]; then
+if [ "x$7" != "x" ]; then
     REMOTE_LOCKFILE_PATH="$7"
 
-    if [ "x$9" != "x" ]; then
+    if [ "x$8" != "x" ]; then
         REMOTE_RUNWITHLOCKFILE_BIN="$8"
     else
         REMOTE_RUNWITHLOCKFILE_BIN="run-with-lockfile"
