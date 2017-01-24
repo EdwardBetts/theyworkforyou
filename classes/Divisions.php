@@ -69,6 +69,63 @@ class Divisions {
         return $this->divisionsByPolicy($q);
     }
 
+    public function getMemberDivsionDetails() {
+        $args = array(':person_id' => $this->member->person_id);
+
+        $policy_divisions = array();
+
+        $q = $this->db->query(
+            "SELECT policy_id, count(division_id) as total, max(year(division_date)) as latest, min(year(division_date)) as earliest
+            FROM policydivisions JOIN persondivisionvotes USING(division_id)
+            WHERE person_id = :person_id AND direction <> 'abstention'
+            GROUP BY policy_id",
+            $args
+        );
+
+        $row_count = $q->rows();
+        for ($n = 0; $n < $row_count; $n++) {
+          $summary = array(
+            'max' => $q->field($n, 'latest'),
+            'min' => $q->field($n, 'earliest'),
+            'total' => $q->field($n, 'total'),
+            'for' => 0, 'against' => 0, 'absent' => 0, 'both' => 0, 'tell' => 0
+          );
+
+          $policy_divisions[$q->field($n, 'policy_id')] = $summary;
+        }
+
+        $q = $this->db->query(
+            "SELECT policy_id, policy_vote, vote, count(division_id) as total
+            FROM policydivisions JOIN persondivisionvotes USING(division_id)
+            WHERE person_id = :person_id AND direction <> 'abstention'
+            GROUP BY policy_id, policy_vote, vote",
+            $args
+        );
+
+        $row_count = $q->rows();
+        for ($n = 0; $n < $row_count; $n++) {
+          $summary = $policy_divisions[$q->field($n, 'policy_id')];
+
+          $vote = $q->field($n, 'vote');
+          $policy_vote = str_replace('3', '', $q->field($n, 'policy_vote'));
+          if ( $vote == 'absent' ) {
+              $summary['absent'] += $q->field($n, 'total');
+          } else if ( $vote == 'both' ) {
+              $summary['both'] += $q->field($n, 'total');
+          } else if ( strpos($vote, 'tell') !== FALSE ) {
+              $summary['tell'] += $q->field($n, 'total');
+          } else if ( $policy_vote == $vote ) {
+              $summary['for'] += $q->field($n, 'total');
+          } else if ( $policy_vote != $vote ) {
+              $summary['against'] += $q->field($n, 'total');
+          }
+
+          $policy_divisions[$q->field($n, 'policy_id')] = $summary;
+        }
+
+        return $policy_divisions;
+    }
+
     public function getMemberDivsionSummaryForPolicy($policyID) {
         $args = array(':person_id' => $this->member->person_id);
         $args[':policy_id'] = $policyID;
@@ -92,7 +149,16 @@ class Divisions {
             $args
         );
 
-        $votes = array('for' => 0, 'against' => 0, 'absent' => 0, 'both' => 0, 'tell' => 0);
+        $votes = array(
+          'max' => $max,
+          'min' => $min,
+          'total' => $total,
+          'for' => 0,
+          'against' => 0,
+          'absent' => 0,
+          'both' => 0,
+          'tell' => 0
+        );
 
         $row_count = $q->rows();
         for ($n = 0; $n < $row_count; $n++) {
@@ -110,6 +176,14 @@ class Divisions {
               $votes['against'] += $q->field($n, 'total');
           }
         }
+
+        return $this->generateSummary($votes);
+    }
+
+    public function generateSummary($votes) {
+        $max = $votes['max'];
+        $min = $votes['min'];
+        $total = $votes['total'];
 
         $vote_summary = $votes['for'] . " for, " . $votes['against'] . " against";
         if ( $votes['both'] ) {

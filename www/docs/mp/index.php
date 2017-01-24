@@ -368,6 +368,8 @@ switch ($pagetype) {
     case 'votes':
 
         $policiesList = new MySociety\TheyWorkForYou\Policies;
+        $divisions = new MySociety\TheyWorkForYou\Divisions($MEMBER);
+        $policySummaries = $divisions->getMemberDivsionDetails();
 
         // Generate voting segments
         $data['key_votes_segments'] = array(
@@ -375,70 +377,70 @@ switch ($pagetype) {
                 'key'   => 'social',
                 'title' => 'Social Issues',
                 'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
-                    $policiesList->limitToSet('social'), $MEMBER
+                    $policiesList->limitToSet('social'), $MEMBER, NULL, $policySummaries
                 )
             ),
             array(
                 'key'   => 'foreign',
                 'title' => 'Foreign Policy and Defence',
                 'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
-                    $policiesList->limitToSet('foreignpolicy'), $MEMBER
+                    $policiesList->limitToSet('foreignpolicy'), $MEMBER, NULL, $policySummaries
                 )
             ),
             array(
                 'key'   => 'welfare',
                 'title' => 'Welfare and Benefits',
                 'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
-                    $policiesList->limitToSet('welfare'), $MEMBER
+                    $policiesList->limitToSet('welfare'), $MEMBER, NULL, $policySummaries
                 )
             ),
             array(
                 'key'   => 'taxation',
                 'title' => 'Taxation and Employment',
                 'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
-                    $policiesList->limitToSet('taxation'), $MEMBER
+                    $policiesList->limitToSet('taxation'), $MEMBER, NULL, $policySummaries
                 )
             ),
             array(
                 'key'   => 'business',
                 'title' => 'Business and the Economy',
                 'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
-                    $policiesList->limitToSet('business'), $MEMBER
+                    $policiesList->limitToSet('business'), $MEMBER, NULL, $policySummaries
                 )
             ),
             array(
                 'key'   => 'health',
                 'title' => 'Health',
                 'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
-                    $policiesList->limitToSet('health'), $MEMBER
+                    $policiesList->limitToSet('health'), $MEMBER, NULL, $policySummaries
                 )
             ),
             array(
                 'key'   => 'education',
                 'title' => 'Education',
                 'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
-                    $policiesList->limitToSet('education'), $MEMBER
+                    $policiesList->limitToSet('education'), $MEMBER, NULL, $policySummaries
                 )
             ),
             array(
                 'key'   => 'reform',
                 'title' => 'Constitutional Reform',
                 'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
-                    $policiesList->limitToSet('reform'), $MEMBER
+                    $policiesList->limitToSet('reform'), $MEMBER, NULL, $policySummaries
                 )
             ),
             array(
                 'key'   => 'home',
                 'title' => 'Home Affairs',
                 'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
-                    $policiesList->limitToSet('home'), $MEMBER
+                    $policiesList->limitToSet('home'), $MEMBER, NULL, $policySummaries
                 )
             ),
             array(
                 'key'   => 'environment',
                 'title' => 'Environmental Issues',
                 'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
-                    $policiesList->limitToSet('environment'), $MEMBER
+                    $policiesList->limitToSet('environment'), $MEMBER, NULL, $policySummaries
                 )
             ),
             array(
@@ -459,7 +461,7 @@ switch ($pagetype) {
                 'key'   => 'misc',
                 'title' => 'Miscellaneous Topics',
                 'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
-                    $policiesList->limitToSet('misc'), $MEMBER
+                    $policiesList->limitToSet('misc'), $MEMBER, NULL, $policySummaries
                 )
             )
         );
