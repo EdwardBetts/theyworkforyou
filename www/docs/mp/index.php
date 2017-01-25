@@ -366,103 +366,119 @@ if ( $this_page == 'msp' || $this_page == 'yourmsp' ) {
 switch ($pagetype) {
 
     case 'votes':
+        $policy = get_http_var('policy');
 
         $policiesList = new MySociety\TheyWorkForYou\Policies;
 
         // Generate voting segments
-        $data['key_votes_segments'] = array(
-            array(
-                'key'   => 'social',
-                'title' => 'Social Issues',
-                'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
-                    $policiesList->limitToSet('social'), $MEMBER
+        if ( $policy ) {
+          $data['key_votes_segments'] = array(
+              array(
+                  'key' => $policy,
+                  'title' => $policiesList->getSetDescriptions()[$policy],
+                  'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
+                      $policiesList->limitToSet($policy), $MEMBER
+                  )
+              )
+          );
+          $data['og_image'] = $url = $MEMBER->url(true) . "/policy_png?policy=" . $policy;
+          $data['page_title'] = $policiesList->getSetDescriptions()[$policy] . ' ' . $title . ' - TheyWorkForYou';
+          $data['meta_description'] = 'See how ' . $data['full_name'] . ' voted on ' . $policiesList->getSetDescriptions()[$policy];
+        } else {
+            $data['key_votes_segments'] = array(
+                array(
+                    'key'   => 'social',
+                    'title' => 'Social Issues',
+                    'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
+                        $policiesList->limitToSet('social'), $MEMBER
+                    )
+                ),
+                array(
+                    'key'   => 'foreignpolicy',
+                    'title' => 'Foreign Policy and Defence',
+                    'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
+                        $policiesList->limitToSet('foreignpolicy'), $MEMBER
+                    )
+                ),
+                array(
+                    'key'   => 'welfare',
+                    'title' => 'Welfare and Benefits',
+                    'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
+                        $policiesList->limitToSet('welfare'), $MEMBER
+                    )
+                ),
+                array(
+                    'key'   => 'taxation',
+                    'title' => 'Taxation and Employment',
+                    'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
+                        $policiesList->limitToSet('taxation'), $MEMBER
+                    )
+                ),
+                array(
+                    'key'   => 'business',
+                    'title' => 'Business and the Economy',
+                    'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
+                        $policiesList->limitToSet('business'), $MEMBER
+                    )
+                ),
+                array(
+                    'key'   => 'health',
+                    'title' => 'Health',
+                    'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
+                        $policiesList->limitToSet('health'), $MEMBER
+                    )
+                ),
+                array(
+                    'key'   => 'education',
+                    'title' => 'Education',
+                    'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
+                        $policiesList->limitToSet('education'), $MEMBER
+                    )
+                ),
+                array(
+                    'key'   => 'reform',
+                    'title' => 'Constitutional Reform',
+                    'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
+                        $policiesList->limitToSet('reform'), $MEMBER
+                    )
+                ),
+                array(
+                    'key'   => 'home',
+                    'title' => 'Home Affairs',
+                    'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
+                        $policiesList->limitToSet('home'), $MEMBER
+                    )
+                ),
+                array(
+                    'key'   => 'environment',
+                    'title' => 'Environmental Issues',
+                    'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
+                        $policiesList->limitToSet('environment'), $MEMBER
+                    )
+                ),
+                array(
+                    'key'   => 'transport',
+                    'title' => 'Transport',
+                    'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
+                        $policiesList->limitToSet('transport'), $MEMBER
+                    )
+                ),
+                array(
+                    'key'   => 'housing',
+                    'title' => 'Housing',
+                    'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
+                        $policiesList->limitToSet('housing'), $MEMBER
+                    )
+                ),
+                array(
+                    'key'   => 'misc',
+                    'title' => 'Miscellaneous Topics',
+                    'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
+                        $policiesList->limitToSet('misc'), $MEMBER
+                    )
                 )
-            ),
-            array(
-                'key'   => 'foreign',
-                'title' => 'Foreign Policy and Defence',
-                'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
-                    $policiesList->limitToSet('foreignpolicy'), $MEMBER
-                )
-            ),
-            array(
-                'key'   => 'welfare',
-                'title' => 'Welfare and Benefits',
-                'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
-                    $policiesList->limitToSet('welfare'), $MEMBER
-                )
-            ),
-            array(
-                'key'   => 'taxation',
-                'title' => 'Taxation and Employment',
-                'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
-                    $policiesList->limitToSet('taxation'), $MEMBER
-                )
-            ),
-            array(
-                'key'   => 'business',
-                'title' => 'Business and the Economy',
-                'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
-                    $policiesList->limitToSet('business'), $MEMBER
-                )
-            ),
-            array(
-                'key'   => 'health',
-                'title' => 'Health',
-                'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
-                    $policiesList->limitToSet('health'), $MEMBER
-                )
-            ),
-            array(
-                'key'   => 'education',
-                'title' => 'Education',
-                'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
-                    $policiesList->limitToSet('education'), $MEMBER
-                )
-            ),
-            array(
-                'key'   => 'reform',
-                'title' => 'Constitutional Reform',
-                'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
-                    $policiesList->limitToSet('reform'), $MEMBER
-                )
-            ),
-            array(
-                'key'   => 'home',
-                'title' => 'Home Affairs',
-                'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
-                    $policiesList->limitToSet('home'), $MEMBER
-                )
-            ),
-            array(
-                'key'   => 'environment',
-                'title' => 'Environmental Issues',
-                'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
-                    $policiesList->limitToSet('environment'), $MEMBER
-                )
-            ),
-            array(
-                'key'   => 'transport',
-                'title' => 'Transport',
-                'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
-                    $policiesList->limitToSet('transport'), $MEMBER
-                )
-            ),
-            array(
-                'key'   => 'housing',
-                'title' => 'Housing',
-                'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
-                    $policiesList->limitToSet('housing'), $MEMBER
-                )
-            ),
-            array(
-                'key'   => 'misc',
-                'title' => 'Miscellaneous Topics',
-                'votes' => new MySociety\TheyWorkForYou\PolicyPositions(
-                    $policiesList->limitToSet('misc'), $MEMBER
-                )
-            )
-        );
+            );
+        }
 
         // Send the output for rendering
         MySociety\TheyWorkForYou\Renderer::output('mp/votes', $data);
