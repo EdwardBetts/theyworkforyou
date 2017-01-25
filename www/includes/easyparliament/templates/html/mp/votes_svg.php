@@ -55,7 +55,7 @@
             <tspan x="40" y="<?= $stance_y + $stance_padding_top + $stance_baseline_offset + ($stance_lineheight * $j) ?>"><?php
                 if (strpos($line, '*') !== False) {
                     echo preg_replace(
-                        '#(?:^|[*])([^\r\n *][^*\n]+[^\r\n *])(?:$|[*])#i',
+                        '#(?:^|[*])([^\r\n *][^*\n]*[^\r\n *])(?:$|[*])#i',
                         $tspan_bold_open . '$1' . $tspan_bold_close,
                         $line
                     );
