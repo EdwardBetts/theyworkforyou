@@ -496,9 +496,11 @@ switch ($pagetype) {
 
         $policiesList = new MySociety\TheyWorkForYou\Policies;
         $policies = $policiesList->limitToSet('summary')->shuffle();
+        $divisions = new MySociety\TheyWorkForYou\Divisions($MEMBER);
+        $policySummaries = $divisions->getMemberDivsionDetails();
 
         // Generate limited voting record list
-        $data['policyPositions'] = new MySociety\TheyWorkForYou\PolicyPositions($policies, $MEMBER, 6);
+        $data['policyPositions'] = new MySociety\TheyWorkForYou\PolicyPositions($policies, $MEMBER, 6, $policySummaries);
 
         // generate party policy diffs
         $party = new MySociety\TheyWorkForYou\Party($MEMBER->party());
